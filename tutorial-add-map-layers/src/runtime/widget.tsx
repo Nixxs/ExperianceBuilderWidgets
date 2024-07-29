@@ -19,25 +19,7 @@ const Widget = (props: AllWidgetProps<any>) => {
 			const fid = event.graphic.attributes.FID;
 
 			if (fid !== undefined) {
-				const query = new Query({
-					where: `FID = ${fid}`,
-					outFields: ["*"], // Request all fields
-					returnGeometry: false,
-				});
-
-				try {
-					// Here, we're calling queryFeatures on the layer object
-					const results = await layer.queryFeatures(query);
-					if (results.features.length > 0) {
-						setSelectedFeature(results.features[0].attributes);
-						console.log(results.features[0].attributes);
-					}
-				} catch (error) {
-					console.error("Error querying feature:", error);
-				}
-			} else {
 				setSelectedFeature(event.graphic.attributes);
-				console.log(event.graphic.attributes);
 			}
 		}
 	};
@@ -47,6 +29,7 @@ const Widget = (props: AllWidgetProps<any>) => {
 
 		const layer = new FeatureLayer({
 			url: "https://services3.arcgis.com/GVgbJbqm8hXASVYi/arcgis/rest/services/Trailheads_Styled/FeatureServer/0",
+			outFields: ["*"],
 		});
 
 		jimuMapView.view.map.add(layer);
